@@ -19,26 +19,8 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::prefix('users')->group(function (){
-    Route::get('', [\App\Http\Controllers\Api\UserController::class, 'index']);
-    Route::get('{user}', [\App\Http\Controllers\Api\UserController::class, 'show']);
-    Route::post('create', [\App\Http\Controllers\Api\UserController::class, 'store']);
-    Route::put('{user}', [\App\Http\Controllers\Api\UserController::class, 'update']);
-    Route::delete('{user}', [\App\Http\Controllers\Api\UserController::class, 'destroy']);
-});
-
-Route::prefix('categories')->group(function (){
-    Route::get('', [\App\Http\Controllers\Api\CategoryController::class, 'index']);
-    Route::get('{category}', [\App\Http\Controllers\Api\CategoryController::class, 'show']);
-    Route::post('create', [\App\Http\Controllers\Api\CategoryController::class, 'store']);
-    Route::put('{category}', [\App\Http\Controllers\Api\CategoryController::class, 'update']);
-    Route::delete('{category}', [\App\Http\Controllers\Api\CategoryController::class, 'destroy']);
-});
-
-Route::prefix('products')->group(function (){
-    Route::get('', [\App\Http\Controllers\Api\ProductController::class, 'index']);
-    Route::get('{product}', [\App\Http\Controllers\Api\ProductController::class, 'show']);
-    Route::post('create', [\App\Http\Controllers\Api\ProductController::class, 'store']);
-    Route::put('{category}', [\App\Http\Controllers\Api\ProductController::class, 'update']);
-    Route::delete('{category}', [\App\Http\Controllers\Api\ProductController::class, 'destroy']);
-});
+Route::apiResource('users', UserController::class);
+Route::apiResource('categories', \App\Http\Controllers\Api\CategoryController::class);
+Route::apiResource('products', \App\Http\Controllers\Api\ProductController::class);
+Route::apiResource('cart', \App\Http\Controllers\Api\CartController::class);
+Route::apiResource('orders', \App\Http\Controllers\Api\OrderController::class);

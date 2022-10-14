@@ -11,19 +11,30 @@ use App\Http\Controllers\Controller;
 
 class ProductController extends Controller
 {
+
+//    public function __construct()
+//    {
+//        $this->authorizeResource(Product::class);
+//    }
+
     public function index(Request $request)
     {
-        $query = Product::query()->select([
-            'products.id',
-            'products.name',
-            'products.description',
-            'products.in_stock',
-            'products.rating'
-        ]);
+        $query = Product::query();
+//        $query = Product::query()->select([
+//            'products.id',
+//            'products.name',
+//            'products.description',
+//            'products.in_stock',
+//            'products.rating'
+//        ]);
         if ($request->has('category_ids')){
             $categoriesIds=explode(',', $request->get('category_ids'));
-            $query->rightJoin('product_categories', 'product_categories.product_id', '=', 'products.id')
-            ->whereIn('product_categories.category_id', $categoriesIds);
+//            $query->rightJoin('product_categories', 'product_categories.product_id', '=', 'products.id')
+//                ->whereIn('product_categories.category_id', $categoriesIds);
+
+            $query->whereHas('categories', function ($query) use ($categoriesIds){
+               $query->whereIn('categories.id', $categoriesIds);
+            });
         }
         $query->whereSortBy($request->get('sort_by', ''));
 
@@ -38,14 +49,19 @@ class ProductController extends Controller
 
     public function store(StoreProductRequest $request)
     {
-        $product= new Product();
-        $product->name=$request->name;
-        $product->description=$request->description;
-        $product->in_stock=$request->in_stock;
-        $product->rating=$request->rating;
-        if ($request->has('category')){
+        $product = new Product();
+// !Dab!        $product = Product::created($request->validated());
+        $product->name = $request->name;
+        $product->description = $request->description;
+        $product->in_stock = $request->in_stock;
+        $product->rating = $request->rating;
+        if ($request->has('category')) {
             $product->applyCategoryByName($request->get('category'));
         }
+// !Dab!        if ($request->has('category_ids')) {
+//            $product->categories()->sync($request->get('category_ids'));
+//        }
+//        return $productService->create($request->validated());
         $product->save();
         if ($product){
             return response()->json('Product created', 200);

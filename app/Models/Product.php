@@ -10,6 +10,14 @@ class Product extends Model
 {
     use HasFactory;
 
+    protected $fillable = [
+        'name',
+        'description',
+        'in_stock',
+        'price',
+        'rating'
+    ];
+
     public function ProductImages(){
         return $this->hasMany(ProductImage::class);
     }
@@ -23,14 +31,20 @@ class Product extends Model
     }
 
     public function applyCategoryByName($categoryName=''){
-        $category=ProductCategory::query()->where('product_categories.category_id', $categoryName)->get()->first();
-        if (empty($category)){
-            $category=new Category();
-            $category->name=$categoryName;
-            $category->save();
-        }
-        $this->categories()->save($category);
-        $this->save();
+
+        ProductCategory::updateOrCreate([
+            'product_id' => $this->id,
+            'category_id' => Category::firstOrCreate(['name' => $categoryName])->id,
+        ]);
+
+//        $category=ProductCategory::query()->where('product_categories.category_id', $categoryName)->get()->first();
+//        if (empty($category)){
+//            $category=new Category();
+//            $category->name=$categoryName;
+//            $category->save();
+//        }
+//        $this->categories()->save($category);
+//        $this->save();
     }
 
     /**
@@ -42,6 +56,14 @@ class Product extends Model
             $query->orderBy('rating', 'DESC');
         }
     }
+
+// !Dab!    public function scopeSortBy($query, $sortBy){
+//        $query->orderBy($sortBy, 'DESC');
+//    }
+//
+//    public function scopeSortByRating(){
+//        return $this->orderBy('rating', 'DESC');
+//    }
 
     /**
      * @param Builder $query

@@ -21,7 +21,16 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'role'
     ];
+
+    public function isAdmin(){
+        return $this->role === Role::ADMIN;
+    }
+
+    public function isUser(){
+        return $this->role === Role::USER;
+    }
 
     /**
      * The attributes that should be hidden for serialization.
@@ -40,6 +49,7 @@ class User extends Authenticatable
      */
     protected $casts = [
         'email_verified_at' => 'datetime',
+        'role' => Role::class,
     ];
 
 }

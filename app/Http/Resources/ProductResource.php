@@ -29,6 +29,8 @@ class ProductResource extends JsonResource
             'images' => array_map(function ($image){
                 return $image['filename'];
             }, $this->ProductImages()->get()->toArray())
+            // !Dab!            'category' => $this->whenLoaded('categories', function() => $this->categories),
+//        'images'=> $this->whenLoaded('ProductImages', function () => $this->productImages->pluck('filename')),
         ];
     }
 }

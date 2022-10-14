@@ -13,6 +13,6 @@ class FakeProductImageSeeder extends Seeder
      */
     public function run()
     {
-        \App\Models\ProductImage::factory(100)->create();
+        \App\Models\ProductImage::factory(400)->create();
     }
 }
