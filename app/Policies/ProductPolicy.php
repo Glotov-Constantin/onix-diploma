@@ -18,7 +18,9 @@ class ProductPolicy
      */
     public function viewAny(User $user)
     {
-        return true;
+        return $user->isAdmin()
+            ? $this->allow()
+            : $this->deny('You are not allowed to create products.');
     }
 
     /**
@@ -41,7 +43,9 @@ class ProductPolicy
      */
     public function create(User $user)
     {
-        return $user->isAdmin();
+        return $user->isAdmin()
+            ? $this->allow()
+            : $this->deny('You are not allowed to create products.');
     }
 
     /**

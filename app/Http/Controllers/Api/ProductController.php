@@ -12,10 +12,10 @@ use App\Http\Controllers\Controller;
 class ProductController extends Controller
 {
 
-//    public function __construct()
-//    {
-//        $this->authorizeResource(Product::class);
-//    }
+    public function __construct()
+    {
+        $this->authorizeResource(Product::class);
+    }
 
     public function index(Request $request)
     {
