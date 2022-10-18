@@ -15,17 +15,17 @@ class ProductResource extends JsonResource
      */
     public function toArray($request)
     {
-//        var_dump($this->name);
-//        exit();
         return [
             'id' => $this->id,
             'name' => $this->name,
             'description' => $this->description,
             'in_stock' => $this->in_stock,
             'rating' => $this->rating,
-            'category' => array_map(function ($category){
-                return $category['id'];
-            }, $this->Category()->get()->toArray()),
+            'price' => $this->price,
+//            'category' => array_map(function ($category){
+//                return $category['id'];
+//            }, $this->Categories()->get()->toArray()),
+            'categories' => $this->whenLoaded('categories', fn() => $this->categories),
             'images' => array_map(function ($image){
                 return $image['filename'];
             }, $this->ProductImages()->get()->toArray())

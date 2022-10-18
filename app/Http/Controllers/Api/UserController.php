@@ -10,12 +10,19 @@ use Illuminate\Support\Facades\DB;
 
 class UserController extends Controller
 {
+
+    public function __construct()
+    {
+        $this->authorizeResource(User::class);
+    }
+
     public function index(Request $request)
     {
         $query = User::query()->select([
             'users.id',
             'users.name',
             'users.email',
+            'role',
             'users.created_at',
             'users.updated_at'
         ]);
@@ -36,6 +43,7 @@ class UserController extends Controller
         $user->name=$request->name;
         $user->email=$request->email;
         $user->password=$request->password;
+        $user->role=$request->role;
         $user->save();
         if ($user){
             return response()->json('User created', 200);
@@ -45,12 +53,12 @@ class UserController extends Controller
         }
     }
 
-    public function update(Request $request)
+    public function update(Request $request, User $user)
     {
-       $user=User::find($request->id);
        $user->name=$request->name;
        $user->email=$request->email;
        $user->password=$request->password;
+       $user->role=$request->role;
        $user->save();
         if ($user){
             return response()->json('User updated', 200);

@@ -10,10 +10,10 @@ use App\Http\Controllers\Controller;
 class CategoryController extends Controller
 {
 
-//    public function __construct()
-//    {
-//        $this->authorizeResource(Category::class);
-//    }
+    public function __construct()
+{
+    $this->authorizeResource(Category::class);
+}
 
     public function index(Request $request)
     {
@@ -47,9 +47,8 @@ class CategoryController extends Controller
         }
     }
 
-    public function update(Request $request)
+    public function update(Request $request, Category $category)
     {
-        $category=Category::find($request->id);
         $category->name=$request->name;
         $category->description=$request->description;
 

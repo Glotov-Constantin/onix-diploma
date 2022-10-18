@@ -18,7 +18,7 @@ class ProductCategoryFactory extends Factory
         $this->product_id++;
         return [
             'product_id' => $this->product_id,
-            'category_id' => $this->faker->numberBetween(1, 50),
+            'category_id' => $this->faker->numberBetween(1, 20),
         ];
     }
 }

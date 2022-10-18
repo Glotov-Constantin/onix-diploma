@@ -2,11 +2,11 @@
 
 namespace App\Policies;
 
-use App\Models\Product;
+use App\Models\Category;
 use App\Models\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
-class ProductPolicy
+class CategoryPolicy
 {
     use HandlesAuthorization;
 
@@ -25,12 +25,12 @@ class ProductPolicy
      * Determine whether the user can view the model.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\Product  $product
+     * @param  \App\Models\Category  $category
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function view(User $user, Product $product)
+    public function view(User $user, Category $category)
     {
-        return true;
+       return true;
     }
 
     /**
@@ -43,62 +43,62 @@ class ProductPolicy
     {
         return $user->isAdmin()
             ? $this->allow()
-            : $this->deny('You are not allowed to create products.');
+            : $this->deny('You are not allowed to create category.');
     }
 
     /**
      * Determine whether the user can update the model.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\Product  $product
+     * @param  \App\Models\Category  $category
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function update(User $user, Product $product)
+    public function update(User $user, Category $category)
     {
         return $user->isAdmin()
             ? $this->allow()
-            : $this->deny('You are not allowed to update products.');
+            : $this->deny('You are not allowed to update category.');
     }
 
     /**
      * Determine whether the user can delete the model.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\Product  $product
+     * @param  \App\Models\Category  $category
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function delete(User $user, Product $product)
+    public function delete(User $user, Category $category)
     {
         return $user->isAdmin()
             ? $this->allow()
-            : $this->deny('You are not allowed to delete products.');
+            : $this->deny('You are not allowed to delete category.');
     }
 
     /**
      * Determine whether the user can restore the model.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\Product  $product
+     * @param  \App\Models\Category  $category
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function restore(User $user, Product $product)
+    public function restore(User $user, Category $category)
     {
         return $user->isAdmin()
             ? $this->allow()
-            : $this->deny('You are not allowed to restore products.');
+            : $this->deny('You are not allowed to restore category.');
     }
 
     /**
      * Determine whether the user can permanently delete the model.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\Product  $product
+     * @param  \App\Models\Category  $category
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function forceDelete(User $user, Product $product)
+    public function forceDelete(User $user, Category $category)
     {
         return $user->isAdmin()
             ? $this->allow()
-            : $this->deny('You are not allowed to delete products.');
+            : $this->deny('You are not allowed to delete category.');
     }
 }

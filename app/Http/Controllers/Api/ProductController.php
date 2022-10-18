@@ -19,22 +19,9 @@ class ProductController extends Controller
 
     public function index(Request $request)
     {
-        $query = Product::query();
-//        $query = Product::query()->select([
-//            'products.id',
-//            'products.name',
-//            'products.description',
-//            'products.in_stock',
-//            'products.rating'
-//        ]);
+        $query = Product::query()->with('categories');
         if ($request->has('category_ids')){
             $categoriesIds=explode(',', $request->get('category_ids'));
-//            $query->rightJoin('product_categories', 'product_categories.product_id', '=', 'products.id')
-//                ->whereIn('product_categories.category_id', $categoriesIds);
-
-            $query->whereHas('categories', function ($query) use ($categoriesIds){
-               $query->whereIn('categories.id', $categoriesIds);
-            });
         }
         $query->whereSortBy($request->get('sort_by', ''));
 
@@ -53,6 +40,7 @@ class ProductController extends Controller
 // !Dab!        $product = Product::created($request->validated());
         $product->name = $request->name;
         $product->description = $request->description;
+        $product->price = $request->price;
         $product->in_stock = $request->in_stock;
         $product->rating = $request->rating;
         if ($request->has('category')) {
@@ -76,6 +64,7 @@ class ProductController extends Controller
         $product->name=$request->name;
         $product->description=$request->description;
         $product->in_stock=$request->in_stock;
+        $product->price = $request->price;
         $product->rating=$request->rating;
         $product->save();
         if ($product){
