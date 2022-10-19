@@ -19,6 +19,11 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
+Route::middleware('auth:sanctum')->group(function () {
+    Route::get('users/personal', [\App\Http\Controllers\Api\UserPersonalController::class, 'index']);
+    Route::put('users/personal', [\App\Http\Controllers\Api\UserPersonalController::class, 'update']);
+});
+
 Route::apiResource('users', UserController::class);
 Route::apiResource('categories', \App\Http\Controllers\Api\CategoryController::class);
 Route::apiResource('products', \App\Http\Controllers\Api\ProductController::class);

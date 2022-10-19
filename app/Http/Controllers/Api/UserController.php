@@ -57,9 +57,9 @@ class UserController extends Controller
     {
        $user->name=$request->name;
        $user->email=$request->email;
-       $user->password=$request->password;
-       $user->role=$request->role;
-       $user->save();
+        $user->password=$request->password;
+        $user->role=$request->role;
+        $user->save();
         if ($user){
             return response()->json('User updated', 200);
         }
