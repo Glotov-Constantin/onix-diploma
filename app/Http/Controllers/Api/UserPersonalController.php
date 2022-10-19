@@ -68,7 +68,7 @@ class UserPersonalController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, User $user)
+    public function update(Request $request)
     {
         Auth::user()->name=$request->name;
         Auth::user()->email=$request->email;
