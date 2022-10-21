@@ -24,9 +24,9 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::put('users/personal', [\App\Http\Controllers\Api\UserPersonalController::class, 'update']);
     Route::apiResource('cart', \App\Http\Controllers\Api\CartController::class);
     Route::delete('cart', [\App\Http\Controllers\Api\CartController::class, 'destroyCart']);
+    Route::apiResource('orders', \App\Http\Controllers\Api\OrderController::class);
 });
 
 Route::apiResource('users', UserController::class);
 Route::apiResource('categories', \App\Http\Controllers\Api\CategoryController::class);
 Route::apiResource('products', \App\Http\Controllers\Api\ProductController::class);
-Route::apiResource('orders', \App\Http\Controllers\Api\OrderController::class);

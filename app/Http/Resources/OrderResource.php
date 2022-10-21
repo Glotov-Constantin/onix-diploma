@@ -19,7 +19,8 @@ class OrderResource extends JsonResource
             'user_id' => $this->user_id,
             'status' => $this->status,
             'comment' => $this->comment,
-            'address' => $this->address
+            'address' => $this->address,
+            'products' => $this->whenLoaded('products', fn() => $this->products()),
         ];
     }
 }

@@ -7,6 +7,8 @@ use App\Models\Order;
 use App\Http\Requests\StoreOrderRequest;
 use App\Http\Requests\UpdateOrderRequest;
 use App\Http\Controllers\Controller;
+use App\Models\OrderItem;
+use Illuminate\Http\Request;
 
 class OrderController extends Controller
 {
@@ -15,11 +17,12 @@ class OrderController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $query = Order::query();
+//        $query = Order::query();
+        $query = Order::query()->with('products');
         return OrderResource::collection($query
-            ->paginate(18));
+            ->paginate(20));
     }
 
     /**
@@ -51,7 +54,7 @@ class OrderController extends Controller
      */
     public function show(Order $order)
     {
-        //
+        return new OrderResource($order);
     }
 
     /**
