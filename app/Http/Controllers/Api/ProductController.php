@@ -43,14 +43,14 @@ class ProductController extends Controller
         $product->price = $request->price;
         $product->in_stock = $request->in_stock;
         $product->rating = $request->rating;
+        $product->save();
         if ($request->has('category')) {
             $product->applyCategoryByName($request->get('category'));
         }
-// !Dab!        if ($request->has('category_ids')) {
-//            $product->categories()->sync($request->get('category_ids'));
-//        }
+        if ($request->has('category_ids')) {
+            $product->categories()->sync($request->get('category_ids'));
+        }
 //        return $productService->create($request->validated());
-        $product->save();
         if ($product){
             return response()->json('Product created', 200);
         }
@@ -66,6 +66,13 @@ class ProductController extends Controller
         $product->in_stock=$request->in_stock;
         $product->price = $request->price;
         $product->rating=$request->rating;
+
+        if ($request->has('category')) {
+            $product->applyCategoryByName($request->get('category'));
+        }
+        if ($request->has('category_ids')) {
+            $product->categories()->sync($request->get('category_ids'));
+        }
         $product->save();
         if ($product){
             return response()->json('Product updated', 200);

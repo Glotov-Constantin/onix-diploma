@@ -22,10 +22,8 @@ class ProductResource extends JsonResource
             'in_stock' => $this->in_stock,
             'rating' => $this->rating,
             'price' => $this->price,
-//            'category' => array_map(function ($category){
-//                return $category['id'];
-//            }, $this->Categories()->get()->toArray()),
             'categories' => $this->whenLoaded('categories', fn() => $this->categories),
+//            'images'=> $this->whenLoaded('ProductImages', fn () => $this->productImages->pluck('filename')),
             'images' => array_map(function ($image){
                 return $image['filename'];
             }, $this->ProductImages()->get()->toArray())

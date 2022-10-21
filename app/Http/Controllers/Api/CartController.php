@@ -8,6 +8,7 @@ use App\Http\Requests\StoreCartRequest;
 use App\Http\Requests\UpdateCartRequest;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class CartController extends Controller
 {
@@ -18,9 +19,7 @@ class CartController extends Controller
      */
     public function index(Request $request)
     {
-        $query = Cart::query();
-        return CartResource::collection($query
-            ->paginate(18));
+        return Cart::getPersonalCart();
     }
 
     /**
@@ -28,7 +27,7 @@ class CartController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(Request $request)
     {
         //
     }
@@ -41,7 +40,17 @@ class CartController extends Controller
      */
     public function store(StoreCartRequest $request)
     {
-        //
+        $cart= new Cart();
+        $cart->user_id=Auth::user()->id;
+        $cart->product_id=$request->product_id;
+        $cart->quantity=$request->quantity;
+        $cart->save();
+        if ($cart){
+            return response()->json('Product added to cart', 200);
+        }
+        else{
+            return response()->json('Add product has been failed');
+        }
     }
 
     /**
@@ -79,13 +88,34 @@ class CartController extends Controller
     }
 
     /**
-     * Remove the specified resource from storage.
+     * Remove one product from user cart.
      *
      * @param  \App\Models\Cart  $cart
      * @return \Illuminate\Http\Response
      */
     public function destroy(Cart $cart)
     {
-        //
+        if ($cart->user_id == Auth::user()->id){
+            $cart->delete();
+            return response()->json('Cart cleared', 200);
+        }
+        if ($cart->user_id !== Auth::user()->id){
+            return response()->json("Cart of another user can't be cleared!");
+        }
+        else{
+            return response()->json('Delete has been failed');
+        }
     }
+
+    /**
+     * Remove all product from user cart.
+     *
+     * @param  \App\Models\Cart  $cart
+     * @return \Illuminate\Http\Response
+     */
+    public function destroyCart(Cart $cart)
+    {
+        return Cart::destroyPersonalCart();
+    }
+
 }

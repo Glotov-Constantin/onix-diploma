@@ -2,9 +2,11 @@
 
 namespace App\Providers;
 
+use App\Models\Cart;
 use App\Models\Category;
 use App\Models\Product;
 use App\Models\User;
+use App\Policies\CartPolicy;
 use App\Policies\CategoryPolicy;
 use App\Policies\ProductPolicy;
 use App\Policies\UserPolicy;
@@ -22,7 +24,8 @@ class AuthServiceProvider extends ServiceProvider
         // 'App\Models\Model' => 'App\Policies\ModelPolicy',
         Product::class => ProductPolicy::class,
         Category::class => CategoryPolicy::class,
-        User::class => UserPolicy::class
+        User::class => UserPolicy::class,
+        Cart::class =>CartPolicy::class
     ];
 
     /**
