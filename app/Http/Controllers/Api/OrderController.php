@@ -9,6 +9,8 @@ use App\Http\Requests\UpdateOrderRequest;
 use App\Http\Controllers\Controller;
 use App\Models\OrderItem;
 use Illuminate\Http\Request;
+use function Symfony\Component\HttpKernel\HttpCache\load;
+use function Symfony\Component\Routing\Loader\Configurator\collection;
 
 class OrderController extends Controller
 {
@@ -19,10 +21,8 @@ class OrderController extends Controller
      */
     public function index(Request $request)
     {
-//        $query = Order::query();
-        $query = Order::query()->with('products');
-        return OrderResource::collection($query
-            ->paginate(20));
+        $query = Order::query()->with('orderItem')->get();
+        return OrderResource::collection($query);
     }
 
     /**
@@ -41,9 +41,21 @@ class OrderController extends Controller
      * @param  \App\Http\Requests\StoreOrderRequest  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(StoreOrderRequest $request)
+    public function store(StoreOrderRequest $request, Order $order)
     {
-        //
+        $order->status=$request->status;
+        $order->comment=$request->comment;
+        $order->address=$request->address;
+        if ($request->has('products')) {
+            $order->Products()->attach($order->id, ['price' => $request->price, 'quantity' => $request->quantity]);
+        }
+        $order->save();
+        if ($order){
+            return $order;
+        }
+        else{
+            return response()->json('Update has been failed');
+        }
     }
 
     /**
@@ -54,7 +66,7 @@ class OrderController extends Controller
      */
     public function show(Order $order)
     {
-        return new OrderResource($order);
+        return new OrderResource(($order)->load('products'));
     }
 
     /**
@@ -77,7 +89,19 @@ class OrderController extends Controller
      */
     public function update(UpdateOrderRequest $request, Order $order)
     {
-        //
+        $order->status=$request->status;
+        $order->comment=$request->comment;
+        $order->address=$request->address;
+        if ($request->has('products')) {
+            $order->Products()->attach($order->id, ['price' => $request->price, 'quantity' => $request->quantity]);
+        }
+        $order->save();
+        if ($order){
+            return $order;
+        }
+        else{
+            return response()->json('Update has been failed');
+        }
     }
 
     /**

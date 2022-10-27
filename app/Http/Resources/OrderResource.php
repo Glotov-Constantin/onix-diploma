@@ -20,7 +20,7 @@ class OrderResource extends JsonResource
             'status' => $this->status,
             'comment' => $this->comment,
             'address' => $this->address,
-            'products' => $this->whenLoaded('products', fn() => $this->products()),
+            'products' => $this->whenLoaded('products'),
         ];
     }
 }
