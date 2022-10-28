@@ -5,6 +5,8 @@ namespace App\Models;
 use http\Env\Request;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Auth;
+use App\Http\Resources\OrderResource;
 
 class Order extends Model
 {
@@ -24,5 +26,15 @@ class Order extends Model
             'order_id' => $this->id,
             'product_id' => Order::firstOrCreate(['id' => $orderId])->id
         ]);
+    }
+
+    public static function destroyPersonalOrder(User $user = null){
+        if (empty($user)){
+            $user=Auth::user();
+        }
+        Order::query()->where('user_id', $user->id)
+            ->delete();
+        return OrderResource::collection(Order::query()->where('user_id', $user->id)
+            ->get()->all());
     }
 }
