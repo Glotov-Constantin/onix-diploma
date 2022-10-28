@@ -21,7 +21,7 @@ class OrderController extends Controller
      */
     public function index(Request $request)
     {
-        $query = Order::query()->with('orderItem')->get();
+        $query = Order::query()->with('products')->get();
         return OrderResource::collection($query);
     }
 
@@ -47,7 +47,7 @@ class OrderController extends Controller
         $order->comment=$request->comment;
         $order->address=$request->address;
         if ($request->has('products')) {
-            $order->Products()->attach($order->id, ['price' => $request->price, 'quantity' => $request->quantity]);
+            $order->Products()->sync($order->id, ['price' => $request->price, 'quantity' => $request->quantity]);
         }
         $order->save();
         if ($order){
